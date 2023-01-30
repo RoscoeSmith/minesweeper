@@ -68,6 +68,7 @@ bool Tile::area_scan() {
             n->open_neighbors();
         }
     }
+    return true;
 }
 
 void Tile::open_neighbors() {
@@ -80,5 +81,6 @@ void Tile::open_neighbors() {
 }
 
 bool Tile::toggle_flag() {
-    flag = ~flag;
+    flag = !flag;
+    return flag;
 }
