@@ -2,7 +2,7 @@
 
 #include <vector>
 
-class Board; // forward declaration
+class Board;
 
 class Tile {
 public:

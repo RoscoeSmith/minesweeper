@@ -5,11 +5,11 @@
 #include <set>
 #include <ctime>
 #include <cstdlib>
-#include "Tile.h"
-
 #include <iostream>
 
-class Board{
+class Tile;
+
+class Board {
 public:
     Board(int r, int c, int m);
     // getters

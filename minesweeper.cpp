@@ -1,5 +1,7 @@
 #include <ncurses.h>
+
 #include "Board.h"
+#include "Tile.h"
 
 int main() {
 	srand(time(NULL));	// init rng
