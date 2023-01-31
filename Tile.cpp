@@ -16,8 +16,8 @@ bool Tile::has_flag() {
     return flag;
 }
 
-std::vector<Tile*> Tile::get_neighbors() {
-    std::vector<Tile*> neighbors;
+std::vector<std::shared_ptr<Tile>> Tile::get_neighbors() {
+    std::vector<std::shared_ptr<Tile>> neighbors;
     for (int r = -1; r < 2; ++r) {
         if (row + r < 0 || row + r >= board->get_row_count()) {
             neighbors.push_back(nullptr);
@@ -109,7 +109,7 @@ void Tile::init_inc_number() {
 
 std::string Tile::get_string() {
     std::string out = "";
-    if (!is_open()) {
+    if (opened) {
         out += "[]";
     } else {
         if (number == -1) {

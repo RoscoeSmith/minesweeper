@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 class Board;
 
@@ -11,7 +12,7 @@ public:
     // getters
     bool is_open();
     bool has_flag();
-    std::vector<Tile*> get_neighbors();
+    std::vector<std::shared_ptr<Tile>> get_neighbors();
     // setters
     int open();
     bool area_scan();

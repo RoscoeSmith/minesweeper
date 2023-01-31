@@ -6,8 +6,8 @@ Board::Board(int r, int c, int m) : row(r), col(c), mines(m) {
     flags = 0;
     for (int y = 0; y < row; ++y) {
         for (int x = 0; x < col; ++x) {
-            Tile t(y, x, 0, this);
-            grid.push_back(&t);
+            auto ptr = std::make_shared<Tile>(y, x, 0, this);
+            grid.push_back(ptr);
         }
     }
 }
@@ -20,11 +20,13 @@ int Board::get_row_count() {
     return row;
 }
 
-Tile* Board::get_tile(int r, int c) {
+std::shared_ptr<Tile> Board::get_tile(int r, int c) {
+    std::cout << grid[(c * col) + row]->get_string() << " test" << std::endl;
     return grid[(c * col) + row];
 }
 
-Tile* Board::get_tile(int idx) {
+std::shared_ptr<Tile> Board::get_tile(int idx) {
+    std::cout << grid[idx]->get_string() << " test" << std::endl;
     return grid[idx];
 }
 
@@ -58,7 +60,10 @@ std::string Board::get_string() {
     std::string out = "";
     for (int y = 0; y < row; ++y) {
         for (int x = 0; x < col; ++x) {
-            out += get_tile(y, x)->get_string();
+            std::cout << y << " " << x << std::endl;
+            auto tile = get_tile(y, x);
+            // std::cout << tile->is_open() << std::endl;
+            // out += tile->get_string();
         }
         out += "\n";
     }
