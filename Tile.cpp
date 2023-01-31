@@ -53,8 +53,10 @@ bool Tile::area_scan() {
     // check if there are sufficient flags
     int flags = 0;
     for (auto n : neighbors) {
-        if (n->has_flag()) {
-            ++flags;
+        if (n != nullptr) {
+            if (n->has_flag()) {
+                ++flags;
+            }
         }
     }
     if (flags < number) {
@@ -74,8 +76,10 @@ bool Tile::area_scan() {
 void Tile::open_neighbors() {
     auto neighbors = get_neighbors();
     for (auto n : neighbors) {
-        if (n->open() == 0) {
-            n->open_neighbors();
+        if (n != nullptr) {
+            if (n->open() == 0) {
+                n->open_neighbors();
+            }
         }
     }
 }
@@ -83,4 +87,38 @@ void Tile::open_neighbors() {
 bool Tile::toggle_flag() {
     flag = !flag;
     return flag;
+}
+
+void Tile::init_set_bomb() {
+    number = -1;
+    auto neighbors = get_neighbors();
+    for (auto neighbor : neighbors) {
+        if (neighbor != nullptr) {
+            neighbor->init_inc_number();
+        }
+    }
+}
+
+void Tile::init_inc_number() {
+    if (number != -1) {
+        number += 1;
+    }
+}
+
+//io
+
+std::string Tile::get_string() {
+    std::string out = "";
+    if (!is_open()) {
+        out += "[]";
+    } else {
+        if (number == -1) {
+            out += "＊";
+        } else if (number == 0) {
+            out += "  ";
+        } else {
+            out += std::to_string(number) + " ";
+        }
+    }
+    return out;    
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <vector>
 
 class Board;
@@ -16,6 +17,10 @@ public:
     bool area_scan();
     void open_neighbors();
     bool toggle_flag();
+    void init_set_bomb();
+    void init_inc_number();
+    // io
+    std::string get_string();
 private:
     int row;
     int col;

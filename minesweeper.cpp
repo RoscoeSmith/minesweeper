@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <iostream>
 
 #include "Board.h"
 #include "Tile.h"
@@ -13,6 +14,9 @@ int main() {
 	// endwin();			/* End curses mode		  */
 
 	Board b(10, 10, 10);
+	std::cout << b.get_string() << std::endl;
+	b.setup_board();
+	std::cout << b.get_string() << std::endl;
 
 	return 0;
 }
