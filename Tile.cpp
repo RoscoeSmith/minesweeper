@@ -109,16 +109,14 @@ void Tile::init_inc_number() {
 
 std::string Tile::get_string() {
     std::string out = "";
-    if (opened) {
-        out += "[]";
-    } else {
-        if (number == -1) {
-            out += "＊";
-        } else if (number == 0) {
-            out += "  ";
+    if (!is_open()) {
+        if (!has_flag()) {
+            out += "＃";
         } else {
-            out += std::to_string(number) + " ";
+            out += "Ｐ";
         }
+    } else {
+        out += tilemap.at(number);
     }
     return out;    
 }

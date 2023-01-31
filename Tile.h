@@ -3,8 +3,23 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <unordered_map>
 
 class Board;
+
+const std::unordered_map<int, const char *> tilemap = {
+    {-1, "＊"},
+    {0, "　"},
+    {1, "１"},
+    {2, "２"},
+    {3, "３"},
+    {4, "４"},
+    {5, "５"},
+    {6, "６"},
+    {7, "７"},
+    {8, "８"},
+    {9, "９"}
+};
 
 class Tile {
 public:

@@ -21,12 +21,10 @@ int Board::get_row_count() {
 }
 
 std::shared_ptr<Tile> Board::get_tile(int r, int c) {
-    std::cout << grid[(c * col) + row]->get_string() << " test" << std::endl;
-    return grid[(c * col) + row];
+    return grid[(r * row) + c];
 }
 
 std::shared_ptr<Tile> Board::get_tile(int idx) {
-    std::cout << grid[idx]->get_string() << " test" << std::endl;
     return grid[idx];
 }
 
@@ -51,6 +49,7 @@ void Board::setup_board() {
     while (minepos.size() != 0) {
         int pos = minepos.top();
         get_tile(pos)->init_set_bomb();
+        minepos.pop();
     }
 }
 
@@ -60,10 +59,7 @@ std::string Board::get_string() {
     std::string out = "";
     for (int y = 0; y < row; ++y) {
         for (int x = 0; x < col; ++x) {
-            std::cout << y << " " << x << std::endl;
-            auto tile = get_tile(y, x);
-            // std::cout << tile->is_open() << std::endl;
-            // out += tile->get_string();
+            out += get_tile(y, x)->get_string();
         }
         out += "\n";
     }
