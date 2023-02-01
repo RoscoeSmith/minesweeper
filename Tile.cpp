@@ -111,9 +111,9 @@ std::string Tile::get_string() {
     std::string out = "";
     if (!is_open()) {
         if (!has_flag()) {
-            out += "＃";
+            out += "\e[90;47m．\e[0m";
         } else {
-            out += "Ｐ";
+            out += "\e[31;47mＰ\e[0m";
         }
     } else {
         out += tilemap.at(number);
