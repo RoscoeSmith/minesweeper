@@ -33,10 +33,10 @@ std::shared_ptr<Tile> Board::get_tile(int idx) {
 void Board::setup_board() {
     std::priority_queue<int> minepos;
     std::set<int> minetrack;
-    while (minetrack.size() < mines) {
+    while (minetrack.size() < (long unsigned int) mines) {
         int pos = rand() % tiles;
         // tile chosen was already opened
-        if (get_tile(pos)->is_open()) {
+        if (get_tile(pos)->is_open() || get_tile(pos)->is_claimed()) {
             continue;
         }
         // tile was already chosen before
@@ -51,6 +51,21 @@ void Board::setup_board() {
         get_tile(pos)->init_set_bomb();
         minepos.pop();
     }
+    open_claimed();
+}
+
+void Board::claim(int r, int c) {
+    auto tile = get_tile(r, c);
+    tile->claim();
+    holding.push_back(tile);
+}
+
+void Board::open_claimed() {
+    std::cout << holding.size() << std::endl;
+    for (auto tile : holding) {
+        tile->open();
+    }
+    holding.clear();
 }
 
 // io
@@ -64,4 +79,18 @@ std::string Board::get_string() {
         out += "\n";
     }
     return out;
+}
+
+// operations
+
+bool Board::open(int r, int c) {
+    int result = get_tile(r, c)->open();
+    if (result == -1) {
+        return false;
+    }
+    return true;
+}
+
+void Board::end_game() {
+    return;
 }

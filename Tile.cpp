@@ -4,6 +4,7 @@
 Tile::Tile(int r, int c, int n, Board* b) : row(r), col(c), number(n), board(b) {
     flag = false;
     opened = false;
+    claimed = false;
 }
 
 // getters
@@ -14,6 +15,10 @@ bool Tile::is_open() {
 
 bool Tile::has_flag() {
     return flag;
+}
+
+bool Tile::is_claimed() {
+    return claimed;
 }
 
 std::vector<std::shared_ptr<Tile>> Tile::get_neighbors() {
@@ -41,6 +46,14 @@ int Tile::open() {
         return -2; // tile was already opened
     } else {
         opened = true;
+        if (number == 0) {
+            auto neighbors = get_neighbors();
+            for (auto neighbor : neighbors) {
+                if (neighbor != nullptr) {
+                    neighbor->open();
+                }
+            }
+        }
         return number;
     }
 }
@@ -103,6 +116,10 @@ void Tile::init_inc_number() {
     if (number != -1) {
         number += 1;
     }
+}
+
+void Tile::claim() {
+    claimed = true;
 }
 
 //io

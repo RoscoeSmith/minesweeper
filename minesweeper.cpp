@@ -14,7 +14,7 @@ int main() {
 	// endwin();			/* End curses mode		  */
 
 	Board b(10, 10, 10);
-	b.get_tile(45)->open();
+	b.claim(5, 5);
 	b.setup_board();
 	std::cout << b.get_string() << std::endl;
 
