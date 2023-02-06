@@ -26,6 +26,7 @@ public:
     // getters
     bool is_open();
     bool has_flag();
+    bool is_claimed();
     std::vector<std::shared_ptr<Tile>> get_neighbors();
     // setters
     int open();
@@ -34,6 +35,7 @@ public:
     bool toggle_flag();
     void init_set_bomb();
     void init_inc_number();
+    void claim();
     // io
     std::string get_string();
 private:
@@ -42,5 +44,6 @@ private:
     int number;
     bool flag;
     bool opened;
+    bool claimed;
     Board* board;
 };
