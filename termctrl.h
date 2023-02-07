@@ -52,7 +52,7 @@ std::pair<int, int> get_cursor_pos() {
 
 // Print the given string to the screen at the terminal cursor
 void print(std::string str) {
-    std::cout << str  << std::flush;
+    std::cout << str << std::flush;
 }
 
 void print_at(int r, int c, std::string str) {
@@ -68,6 +68,10 @@ void print_at_r(int r, int c, std::string str) {
 
 void clear_from_cursor() {
     std::cout << "\e[J" << std::flush;
+}
+
+void clear_line() {
+    std::cout << "\e[K" << std::flush;
 }
 
 // Clear the screen and set terminal cursor to 1;1
