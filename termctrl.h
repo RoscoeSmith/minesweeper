@@ -87,20 +87,35 @@ int get_window_rows() {
 }
 
 int get_input() {
-    int ch = getchar();
-    switch (ch) {
-        case 27: {
-            print_at_r(get_window_rows(), 1, "\e[7mESC\e[0m");
-            int ch2 = getchar();
-            if (ch2 == 27) {
-                std::cout << "double escape" << std::endl;
-            } else if (ch2 == 91) {
-                std::cout << "arrow: " << getchar() << std::endl;
-            }
+    switch (getchar()) {
+        case 27: { // ESC
+            store_cursor();
+            print_at(get_window_rows(), 1, "\e[7m ESC \e[0m");
+            int temp = getchar();
+            set_window_cursor(get_window_rows(), 1);
             clear_from_cursor();
-            break;
+            restore_cursor();
+            switch (temp) {
+                case 27: // ESC
+                    clear_from_cursor();
+                    return Input::QUIT;
+                case 91: // [
+                    switch (getchar()) {
+                        case 'A':
+                            return Input::UP;
+                        case 'B':
+                            return Input::DOWN;
+                        case 'C':
+                            return Input::RIGHT;
+                        case 'D':
+                            return Input::LEFT;
+                        default:
+                            return Input::UNKNOWN;
+                    }
+                default:
+                    return Input::UNKNOWN;
+            }
         } default:
-            break;
+            return Input::UNKNOWN;
     }
-    return ch;
 }

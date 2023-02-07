@@ -4,7 +4,7 @@ HEADER	= Tile.h Board.h
 OUT	= minesweeper
 CC	 = g++
 FLAGS	 = -g -c -Wall
-LFLAGS	 = -lncurses
+LFLAGS	 = 
 VER		 = c++2a
 
 all: $(OBJS)
