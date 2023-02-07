@@ -7,11 +7,6 @@
 
 class Board;
 
-/* Color Usage:
-    Opened BG:      Bright Black    | Cyan
-    Unopened BG:    White           | Bright Cyan
-    Unopened Text:  Foreground      | Background
-*/
 const std::unordered_map<int, const char *> tilemap = {
     {-3, "\e[31;47mＰ\e[0m"}, // flag
     {-2, "\e[90;47m::\e[0m"}, // unopened
