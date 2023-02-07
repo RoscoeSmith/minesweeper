@@ -2,6 +2,7 @@
 #include "Board.h"
 #include "Tile.h"
 #include <vector>
+#include <unordered_map>
 #include <algorithm>
 #include <iomanip>
 
@@ -18,8 +19,8 @@ int main() {
     termios old_tio, new_tio;
     // Establish state machine
     int state = State::INIT;
-    std::vector<int> storage_int;
-    std::vector<std::string> storage_str;
+    std::unordered_map<int, int> storage_int;
+    std::unordered_map<int, std::string> storage_str;
 
     while (true) {
         switch (state) {
@@ -49,8 +50,8 @@ int main() {
                 print_at(7, 3,  "     Rows: < 10 >");
                 print_at(9, 3,  "    Mines: < 10 >");
                 print_at(11, 3, "      START      ");
-                storage_int = {0, 9, 10, 10, 32, 32, 1023};
-                storage_str = {"  Columns: ", "     Rows: ", "    Mines: ", "      START"};
+                storage_int = {{0,0}, {1,9}, {2,10}, {3,10}, {4,32}, {5,32}, {6,1023}};
+                storage_str = {{0,"  Columns: "}, {1,"     Rows: "}, {2,"    Mines: "}, {3,"      START"}};
                 state = State::MENU;
             }
             case State::MENU: {
@@ -62,38 +63,44 @@ int main() {
                 // 4: Max columns
                 // 5: Max rows
                 // 6: Max mines
+                int last = storage_int[0];
                 int action = get_input();
                 switch (action) {
                     case Input::QUIT: // ESC ESC
                         state = State::EXIT;
                         break;
                     case Input::UP: { // Up
-                        storage_int[0] == std::max(storage_int[0] - 1, 0);
+                        storage_int[0] = std::max(storage_int[0] - 1, 0);
+                        std::cout << storage_int[0] << std::flush;
                         break;
                     }
                     case Input::DOWN: { // Down
-                        storage_int[0] == std::min(storage_int[0] + 1, 3);
+                        storage_int[0] = std::min(storage_int[0] + 1, 3);
+                        std::cout << storage_int[0] << std::flush;
                         break;
                     }
-                    case Input::RIGHT: {
+                    case Input::RIGHT: { // Right
                         storage_int[storage_int[0] + 1] = std::min(storage_int[storage_int[0] + 1], storage_int[storage_int[0] + 4]);
+                        std::cout << storage_int[storage_int[0] + 1] << std::flush;
                         break;
                     }
-                    case Input::LEFT: {
+                    case Input::LEFT: { // Left
                         storage_int[storage_int[0] + 1] = std::max(storage_int[storage_int[0] + 1], 1);
+                        std::cout << storage_int[storage_int[0] + 1] << std::flush;
+                        break;
                     }
                     default:
                         break;
                 }
-                switch (action) {
-                    case Input::UP || Input::DOWN || Input::RIGHT || Input::LEFT: {
-                        set_window_cursor(((2 + storage_int[0]) * 2) + 1, 3);
+                if (action >= Input::UP && action <= Input::LEFT) {
+                    if (last != storage_int[0]) {
+                        set_window_cursor(((2 + last) * 2) + 1, 3);
                         clear_line();
-                        std::cout << storage_str[storage_int[0]] << "\e[7m< " << std::setw(2) << storage_int[1] << " >\e[0m]" << std::flush;
-                        break;
+                        std::cout << storage_str[last] << "< " << std::setw(2) << storage_int[1] << " >" << std::flush;
                     }
-                    default:
-                        break;
+                    set_window_cursor(((2 + storage_int[0]) * 2) + 1, 3);
+                    clear_line();
+                    std::cout << storage_str[storage_int[0]] << "\e[7m< " << std::setw(2) << storage_int[1] << " >\e[0m" << std::flush;
                 }
             }
         }
