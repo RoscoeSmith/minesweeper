@@ -7,7 +7,14 @@
 
 class Board;
 
+/* Color Usage:
+    Opened BG:      Bright Black    | Cyan
+    Unopened BG:    White           | Bright Cyan
+    Unopened Text:  Foreground      | Background
+*/
 const std::unordered_map<int, const char *> tilemap = {
+    {-3, "\e[31;47mＰ\e[0m"}, // flag
+    {-2, "\e[90;47m::\e[0m"}, // unopened
     {-1, "\e[30;41m＊\e[0m"},
     {0, "\e[100m　\e[0m"},
     {1, "\e[94;100m１\e[0m"},
@@ -18,6 +25,21 @@ const std::unordered_map<int, const char *> tilemap = {
     {6, "\e[36;100m６\e[0m"},
     {7, "\e[35;100m７\e[0m"},
     {8, "\e[37;100m８\e[0m"}
+};
+
+const std::unordered_map<int, const char *> tilemap_highlight = {
+    {-3, "\e[31;106mＰ\e[0m"}, // flag
+    {-2, "\e[90;106m::\e[0m"}, // unopened
+    {-1, "\e[30;101m＊\e[0m"}, // bomb
+    {0, "\e[106m　\e[0m"},
+    {1, "\e[90;46m１\e[0m"},
+    {2, "\e[90;46m２\e[0m"},
+    {3, "\e[90;46m３\e[0m"},
+    {4, "\e[90;46m４\e[0m"},
+    {5, "\e[90;46m５\e[0m"},
+    {6, "\e[90;46m６\e[0m"},
+    {7, "\e[90;46m７\e[0m"},
+    {8, "\e[90;46m８\e[0m"}
 };
 
 class Tile {
@@ -37,7 +59,7 @@ public:
     void init_inc_number();
     void claim();
     // io
-    std::string get_string();
+    std::string get_string(bool is_cursor = false);
 private:
     int row;
     int col;

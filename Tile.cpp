@@ -124,16 +124,22 @@ void Tile::claim() {
 
 //io
 
-std::string Tile::get_string() {
+std::string Tile::get_string(bool is_cursor) {
+    const std::unordered_map<int, const char *>* mapper;
+    if (is_cursor) {
+        mapper = &tilemap_highlight;
+    } else {
+        mapper = &tilemap;
+    }
     std::string out = "";
     if (!is_open()) {
         if (!has_flag()) {
-            out += "\e[90;47m．\e[0m";
+            out += mapper->at(-2);
         } else {
-            out += "\e[31;47mＰ\e[0m";
+            out += mapper->at(-3);
         }
     } else {
-        out += tilemap.at(number);
+        out += mapper->at(number);
     }
     return out;    
 }

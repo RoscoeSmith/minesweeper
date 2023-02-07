@@ -2,6 +2,8 @@
 #include "Tile.h"
 
 Board::Board(int r, int c, int m) : row(r), col(c), mines(m) {
+    c_r = 0;
+    c_c = 0;
     tiles = row * col;
     flags = 0;
     for (int y = 0; y < row; ++y) {
@@ -11,6 +13,8 @@ Board::Board(int r, int c, int m) : row(r), col(c), mines(m) {
         }
     }
 }
+
+// getters
 
 int Board::get_col_count() {
     return col;
@@ -26,6 +30,10 @@ std::shared_ptr<Tile> Board::get_tile(int r, int c) {
 
 std::shared_ptr<Tile> Board::get_tile(int idx) {
     return grid[idx];
+}
+
+std::shared_ptr<Tile> Board::get_cursor_tile() {
+    return get_tile(c_r, c_c);
 }
 
 // setters
@@ -68,13 +76,41 @@ void Board::open_claimed() {
     holding.clear();
 }
 
+void Board::set_cursor(int r, int c) {
+    if (r >= 0 && r < get_row_count()) {
+        c_r = r;
+    }
+    if (c >= 0 && c < get_col_count()) {
+        c_c = c;
+    }
+}
+void Board::move_cursor(int r, int c) {
+    // set row
+    if (r < 0) {
+        c_r = std::max(c_r + r, 0);
+    } else if (r > 0) {
+        c_r = std::min(c_r + r, get_row_count() - 1);
+    }
+    // set column
+    if (c < 0) {
+        c_c = std::max(c_c + c, 0);
+    } else if (c > 0) {
+        c_c = std::min(c_c + c, get_col_count() - 1);
+    }
+}
+
 // io
 
 std::string Board::get_string() {
     std::string out = "";
     for (int y = 0; y < row; ++y) {
         for (int x = 0; x < col; ++x) {
-            out += get_tile(y, x)->get_string();
+            auto tile = get_tile(y, x);
+            if (tile == get_cursor_tile()) {
+                out += tile->get_string(true);
+            } else {
+                out += tile->get_string();
+            }
         }
         out += "\n";
     }

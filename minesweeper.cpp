@@ -16,7 +16,13 @@ int main() {
 	Board b(10, 10, 10);
 	b.claim(5, 5);
 	b.setup_board();
-	std::cout << b.get_string() << std::endl;
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 10; ++j) {
+			std::cout << i << " " << j << std::endl;
+			b.set_cursor(i, j);
+			std::cout << b.get_string() << std::endl;
+		}
+	}
 
 	return 0;
 }
