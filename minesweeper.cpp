@@ -23,9 +23,9 @@ int main() {
     // print(b.get_string());
     while (true) {
         print("\n");
-        int ch = get_input();
-        print(std::to_string(ch));
-        if (ch == 97) { // 'a'
+        int inp = get_input();
+        print(std::to_string(inp));
+        if (inp == Input::QUIT) { // ESC ESC
             break;
         }
     }

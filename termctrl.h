@@ -87,7 +87,8 @@ int get_window_rows() {
 }
 
 int get_input() {
-    switch (getchar()) {
+    int ch = getchar();
+    switch (ch) {
         case 27: { // ESC
             store_cursor();
             print_at(get_window_rows(), 1, "\e[7m ESC \e[0m");
@@ -101,13 +102,13 @@ int get_input() {
                     return Input::QUIT;
                 case 91: // [
                     switch (getchar()) {
-                        case 'A':
+                        case 'A': // Up
                             return Input::UP;
-                        case 'B':
+                        case 'B': // Down
                             return Input::DOWN;
-                        case 'C':
+                        case 'C': // Right
                             return Input::RIGHT;
-                        case 'D':
+                        case 'D': // Left
                             return Input::LEFT;
                         default:
                             return Input::UNKNOWN;
@@ -115,7 +116,27 @@ int get_input() {
                 default:
                     return Input::UNKNOWN;
             }
-        } default:
+        } 
+        case 10: // Enter
+            return Input::CONFIRM;
+        case 127: // Backspace
+            return Input::DENY;
+        case 'j':
+        case 'J':
+        case 'z':
+        case 'Z':
+            return Input::M1;
+        case 'k':
+        case 'K':
+        case 'x':
+        case 'X':
+            return Input::M2;
+        case 'l':
+        case 'L':
+        case 'c':
+        case 'C':
+            return Input::M3;
+        default:
             return Input::UNKNOWN;
     }
 }
