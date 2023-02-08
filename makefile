@@ -1,6 +1,6 @@
-OBJS	= minesweeper.o Tile.o Board.o
-SOURCE	= minesweeper.cpp Tile.cpp Board.cpp
-HEADER	= Tile.h Board.h
+OBJS	= minesweeper.o Tile.o Board.o Menu.o
+SOURCE	= minesweeper.cpp Tile.cpp Board.cpp Menu.cpp
+HEADER	= Tile.h Board.h Menu.h
 OUT	= minesweeper
 CC	 = g++
 FLAGS	 = -g -c -Wall
@@ -17,7 +17,10 @@ Tile.o: Tile.cpp
 	$(CC) $(FLAGS) Tile.cpp -std=$(VER)
 
 Board.o: Board.cpp
-	$(CC) $(FLAGS) Board.cpp -std=c++17
+	$(CC) $(FLAGS) Board.cpp -std=$(VER)
+
+Menu.o: Menu.cpp
+	$(CC) $(FLAGS) Menu.cpp -std=$(VER)
 
 
 clean:
