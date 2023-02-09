@@ -48,7 +48,7 @@ int MenuButton::center() {
 }
 
 // Menu
-Menu::Menu(int w, int h, int x, int y) : _width(x), _height(h), _x(x), _y(y) {
+Menu::Menu(int w, int h, int x, int y) : _width(w), _height(h), _x(x), _y(y) {
     _ptr = 0;
     _center_x = _width / 2;
 }
@@ -69,9 +69,7 @@ void Menu::draw_item(int idx) {
         out = _items[idx]->get_string();
     }
     std::pair<int, int> cpos = find_rc(idx);
-    int r = cpos.first;
-    int c = cpos.second;
-    std::cout << "\e[" << std::to_string(r) << ";" << std::to_string(c) << "H" << out << std::flush;
+    print_at(cpos.first, cpos.second, out);
 }
 
 void Menu::draw_current() {
