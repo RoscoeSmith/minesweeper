@@ -1,5 +1,7 @@
 Board.o
 Tile.o
+Menu.o
+termctrl.o
 minesweeper.o
 minesweeper
 /.vscode/
