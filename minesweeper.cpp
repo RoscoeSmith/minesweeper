@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "termctrl.h"
 
+// State machine states
 enum State {
     INIT,
     EXIT,
@@ -29,7 +30,7 @@ int main() {
                 tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
                 std::cout << "\e[?25l"; // hide cursor
                 cls();
-                state = State::MENU_I;
+                state = State::MENU;
                 break;
             }
             case State::EXIT: {
@@ -39,17 +40,19 @@ int main() {
                 cls();
                 return 0;
             }
-            case State::MENU_I: {
-                Menu menu(80, 24, 1, 1);
-                menu.add_button("Button");
-                menu.add_button("Button 2");
+            case State::MENU: {
+                auto wsize = get_window_size();
+                Menu menu(State::MENU, wsize.ws_col, wsize.ws_row, 1, 1);
+                menu.add_button("Dummy", State::MENU);
+                menu.add_button("Quit", State::EXIT);
                 menu.draw_item(0);
                 menu.draw_item(1);
-                getchar();
-                state = State::EXIT;
-            }
-            case State::MENU: {
-                break;
+                while (true) {
+                    state = menu.parse_input(get_input());
+                    if (state != State::MENU) {
+                        break;
+                    }
+                }
             }
         }
     }
