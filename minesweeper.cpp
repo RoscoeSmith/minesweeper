@@ -1,7 +1,7 @@
+#include "Menu.h"
 #include "Board.h"
 #include "Tile.h"
-#include "Menu.h"
-// #include "termctrl.h"
+#include "termctrl.h"
 
 enum State {
     INIT,
@@ -17,50 +17,42 @@ int main() {
     // Establish state machine
     int state = State::INIT;
 
-    Menu menu(80, 24, 1, 1);
-    menu.add_button("Button");
-    menu.add_button("Button 2");
-    menu.draw_item(0);
-    menu.draw_item(1);
-    getchar();
-
-    // while (true) {
-    //     switch (state) {
-    //         case State::INIT: {
-    //             // Init RNG
-    //             srand(time(NULL));
-    //             // Configure terminal environment [ChatGPT]
-    //             tcgetattr(STDIN_FILENO, &old_tio);
-    //             new_tio = old_tio;
-    //             new_tio.c_lflag &= (~ICANON & ~ECHO);
-    //             tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
-    //             std::cout << "\e[?25l"; // hide cursor
-    //             state = State::MENU_I;
-    //             break;
-    //         }
-    //         case State::EXIT: {
-    //             // Reset terminal environment
-    //             std::cout << "\e[?25h"; // show cursor
-    //             tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
-    //             cls();
-    //             return 0;
-    //         }
-    //         case State::MENU_I: {
-    //             cls();
-    //             print_at(2, 3,  "  Minesweeper TUI");
-    //             print_at(5, 3,  "  Columns: <  9 >");
-    //             print_at(7, 3,  "     Rows: < 10 >");
-    //             print_at(9, 3,  "    Mines: < 10 >");
-    //             print_at(11, 3, "      START      ");
-    //             storage_int = {{0,0}, {1,9}, {2,10}, {3,10}, {4,32}, {5,32}, {6,1023}};
-    //             storage_str = {{0,"  Columns: "}, {1,"     Rows: "}, {2,"    Mines: "}, {3,"      START"}};
-    //             state = State::MENU;
-    //         }
-    //         case State::MENU: {
-    //             break;
-    //         }
-    //     }
-    // }
+    while (true) {
+        switch (state) {
+            case State::INIT: {
+                // Init RNG
+                srand(time(NULL));
+                // Configure terminal environment [ChatGPT]
+                tcgetattr(STDIN_FILENO, &old_tio);
+                new_tio = old_tio;
+                new_tio.c_lflag &= (~ICANON & ~ECHO);
+                tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
+                std::cout << "\e[?25l"; // hide cursor
+                cls();
+                state = State::MENU_I;
+                break;
+            }
+            case State::EXIT: {
+                // Reset terminal environment
+                std::cout << "\e[?25h"; // show cursor
+                tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
+                cls();
+                return 0;
+            }
+            case State::MENU_I: {
+                Menu menu(80, 24, 1, 1);
+                menu.add_button("Button");
+                menu.add_button("Button 2");
+                menu.draw_item(0);
+                menu.draw_item(1);
+                getchar();
+                state = State::EXIT;
+            }
+            case State::MENU: {
+                break;
+            }
+        }
+    }
 
 
 

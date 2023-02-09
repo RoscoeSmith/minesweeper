@@ -69,6 +69,7 @@ void Menu::draw_item(int idx) {
         out = _items[idx]->get_string();
     }
     std::pair<int, int> cpos = find_rc(idx);
+    std::cout << cpos.first << cpos.second << std::flush;
     print_at(cpos.first, cpos.second, out);
 }
 
