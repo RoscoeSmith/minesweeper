@@ -9,7 +9,7 @@ class Board;
 
 const std::unordered_map<int, const char *> tilemap = {
     {-3, "\e[31;47mＰ\e[0m"}, // flag
-    {-2, "\e[90;47m::\e[0m"}, // unopened
+    {-2, "\e[90;47m＋\e[0m"}, // unopened
     {-1, "\e[30;41m＊\e[0m"},
     {0, "\e[100m　\e[0m"},
     {1, "\e[94;100m１\e[0m"},
@@ -24,7 +24,7 @@ const std::unordered_map<int, const char *> tilemap = {
 
 const std::unordered_map<int, const char *> tilemap_highlight = {
     {-3, "\e[31;106mＰ\e[0m"}, // flag
-    {-2, "\e[90;106m::\e[0m"}, // unopened
+    {-2, "\e[90;106m＋\e[0m"}, // unopened
     {-1, "\e[30;101m＊\e[0m"}, // bomb
     {0, "\e[106m　\e[0m"},
     {1, "\e[90;46m１\e[0m"},
