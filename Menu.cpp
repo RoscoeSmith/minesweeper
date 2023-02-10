@@ -49,14 +49,54 @@ int MenuButton::center() {
     return _center;
 }
 
+MenuInt::MenuInt(std::string l, int flo, int ceil, int def, int s) : MenuItem(s), _label(l), floor(flo), ceiling(ceil) {
+    _length = _label.size() + 2;
+    _center = _length / 2;
+}
+
+std::string MenuInt::get_string() {
+    std::string out = (_label + "  ");
+    
+}
+
+std::string MenuInt::get_string_hover() {
+    std::string out = (_label + "  ");
+    if (value == floor) {
+        out +="\e[37m<\e[0m "
+    }
+}
+
+void MenuInt::increment() {
+    value = std::min(ceiling, value);
+}
+
+void MenuInt::decrement() {
+    value = std::max(floor, value);
+}
+
+int MenuInt::get_value() {
+    return value;
+}
+
+int MenuInt::length() {
+    return _length;
+}
+
+int MenuInt::center() {
+    return _center;
+}
+
 // Menu
 Menu::Menu(int s, int w, int h, int x, int y) : _own_state(s), _width(w), _height(h), _x(x), _y(y) {
     _ptr = 0;
     _center_x = _width / 2;
+    _title = "";
+    _title_center = 0;
 }
 
 void Menu::set_title(std::string t) {
     _title = t;
+    _title_center = _title.size() / 2;
 }
 
 void Menu::add_button(std::string l, int s = -1) {
@@ -67,7 +107,7 @@ void Menu::add_button(std::string l, int s = -1) {
 }
 
 void Menu::draw_title() {
-    return;
+    print_at(_TITLE_OFF, _x + _center_x - _title_center, _title);
 }
 
 void Menu::draw_item(int idx) {

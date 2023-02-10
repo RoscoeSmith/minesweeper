@@ -37,6 +37,26 @@ private:
     int _center;
 };
 
+class MenuInt : public MenuItem {
+public:
+    MenuInt(std::string l, int flo, int ceil, int def, int s);
+    virtual std::string get_string();
+    virtual std::string get_string_hover();
+    void increment();
+    void decrement();
+    int get_value();
+    int length();
+    int center();
+private:
+    std::string _label;
+    int floor;
+    int ceiling;
+    int value;
+    int _switch_to;
+    int _length;
+    int _center;
+}
+
 class Menu {
 public:
     Menu(int s, int w, int h, int x, int y);
@@ -63,8 +83,9 @@ private:
     int _y;
     int _center_x;
     std::string _title;
+    int _title_center;
     std::vector<std::shared_ptr<MenuItem>> _items;
     int _ptr;
-    const int _TITLE_OFF = 1;
-    const int _ITEM_OFF = 4;
+    const int _TITLE_OFF = 2;
+    const int _ITEM_OFF = 5;
 };
