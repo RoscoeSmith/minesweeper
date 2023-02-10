@@ -44,11 +44,13 @@ int main() {
                 auto wsize = get_window_size();
                 Menu menu(State::MENU, wsize.ws_col, wsize.ws_row, 1, 1);
                 menu.add_button("Dummy", State::MENU);
+                menu.add_int("Integer", 0, 10, 5, State::MENU);
                 menu.add_button("Quit", State::EXIT);
                 menu.set_title("Minesweeper TUI");
                 menu.draw_title();
                 menu.draw_item(0);
                 menu.draw_item(1);
+                menu.draw_item(2);
                 while (true) {
                     state = menu.parse_input(get_input());
                     if (state != State::MENU) {

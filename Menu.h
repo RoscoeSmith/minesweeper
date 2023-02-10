@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,6 +15,8 @@ class MenuItem {
 public:
     MenuItem(int s);
     int switch_to();
+    virtual void increment();
+    virtual void decrement();
     virtual int confirm();
     virtual std::string get_string();
     virtual std::string get_string_hover();
@@ -49,13 +52,14 @@ public:
     int center();
 private:
     std::string _label;
-    int floor;
-    int ceiling;
-    int value;
+    int _floor;
+    int _ceiling;
+    int _value;
+    int _slots;
     int _switch_to;
     int _length;
     int _center;
-}
+};
 
 class Menu {
 public:
@@ -66,6 +70,7 @@ public:
     int y();
     void set_title(std::string t);
     void add_button(std::string l, int s);
+    void add_int(std::string l, int f, int c, int d, int s);
     void draw_title();
     void draw_item(int idx);
     void draw_current();
@@ -74,6 +79,8 @@ public:
 private:
     void move_up();
     void move_down();
+    void increment();
+    void decrement();
     int confirm();
     std::pair<int, int> find_rc(int idx);
     int _own_state;

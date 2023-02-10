@@ -7,6 +7,14 @@ int MenuItem::switch_to() {
     return _switch_to;
 }
 
+void MenuItem::increment() {
+    return;
+}
+
+void MenuItem::decrement() {
+    return;
+}
+
 int MenuItem::confirm() {
     return switch_to();
 }
@@ -49,33 +57,45 @@ int MenuButton::center() {
     return _center;
 }
 
-MenuInt::MenuInt(std::string l, int flo, int ceil, int def, int s) : MenuItem(s), _label(l), floor(flo), ceiling(ceil) {
+MenuInt::MenuInt(std::string l, int flo, int ceil, int def, int s) : MenuItem(s), _label(l), _floor(flo), _ceiling(ceil), _value(def) {
     _length = _label.size() + 2;
     _center = _length / 2;
+    _slots = std::to_string(_ceiling).size();
 }
 
 std::string MenuInt::get_string() {
-    std::string out = (_label + "  ");
-    
+    std::stringstream out;
+    out << _label << "   " << std::setw(_slots) << _value << "  ";
+    return out.str();
 }
 
 std::string MenuInt::get_string_hover() {
-    std::string out = (_label + "  ");
-    if (value == floor) {
-        out +="\e[37m<\e[0m "
+    std::stringstream out;
+    out << _label << " ";
+    if (_value == _floor) {
+        out << "\e[37m<\e[0m ";
+    } else {
+        out << "\e[0m< ";
     }
+    out << std::setw(_slots) << _value;
+    if (_value == _ceiling) {
+        out << " \e[37m>\e[0m";
+    } else {
+        out << " >";
+    }
+    return out.str();
 }
 
 void MenuInt::increment() {
-    value = std::min(ceiling, value);
+    _value = std::min(_ceiling, _value + 1);
 }
 
 void MenuInt::decrement() {
-    value = std::max(floor, value);
+    _value = std::max(_floor, _value - 1);
 }
 
 int MenuInt::get_value() {
-    return value;
+    return _value;
 }
 
 int MenuInt::length() {
@@ -106,6 +126,13 @@ void Menu::add_button(std::string l, int s = -1) {
     _items.push_back(std::make_shared<MenuButton>(l, s));
 }
 
+void Menu::add_int(std::string l, int f, int c, int d, int s = -1) {
+    if (s == -1) {
+        s = _own_state;
+    }
+    _items.push_back(std::make_shared<MenuInt>(l, f, c, d, s));
+}
+
 void Menu::draw_title() {
     print_at(_TITLE_OFF, _x + _center_x - _title_center, _title);
 }
@@ -132,6 +159,12 @@ int Menu::parse_input(int input) {
             break;
         case Input::DOWN:
             move_down();
+            break;
+        case Input::RIGHT:
+            increment();
+            break;
+        case Input::LEFT:
+            decrement();
             break;
         case Input::CONFIRM:
             return confirm();
@@ -161,6 +194,16 @@ void Menu::move_down() {
         draw_current();
         draw_item(last);
     }
+}
+
+void Menu::increment() {
+    _items[_ptr]->increment();
+    draw_current();
+}
+
+void Menu::decrement() {
+    _items[_ptr]->decrement();
+    draw_current();
 }
 
 int Menu::confirm() {
